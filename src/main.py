@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import mysql.connector
 from mysql.connector import Error
+import pyttsx3
 
 
 def check_database():
@@ -116,7 +117,7 @@ def login():
 def get_random_word():
     db = check_database()
     if db is None:
-        return None
+        return None, None
 
     try:
         cursor = db.cursor()
@@ -141,10 +142,42 @@ def main_window():
     learn_window.geometry('1024x768')
     learn_window.title('Learning English')
 
-    word, meaning = get_random_word()
-    if word:
-        Label(learn_window, text=f"Từ vựng: {word}", font=("Arial", 18)).pack(pady=20)
-        Label(learn_window, text=f"Nghĩa: {meaning}", font=("Arial", 16)).pack()
+    current_word, current_meaning = get_random_word()
+
+    word_label = Label(learn_window, text=f"Từ vựng: {current_word}", font=("Arial", 18))
+    word_label.pack(pady=20)
+
+    meaning_label = Label(learn_window, text=f"Nghĩa: {current_meaning}", font=("Arial", 16))
+    meaning_label.pack()
+
+    def read_current_word():
+        engine = pyttsx3.init()
+
+        if current_word and current_meaning:
+            # Read word
+            engine.say(current_word)
+            engine.runAndWait()
+            # Read meaning
+            engine.say(current_meaning)
+            engine.runAndWait()
+        else:
+            engine.say("Không có từ nào để đọc.")
+            engine.runAndWait()
+
+    def get_new_word():
+        nonlocal current_word, current_meaning
+        current_word, current_meaning = get_random_word()
+
+        if current_word and current_meaning:
+            word_label.config(text=f"Từ vựng: {current_word}")
+            meaning_label.config(text=f"Nghĩa: {current_meaning}")
+        else:
+            word_label.config(text="Không tìm thấy từ nào!")
+            meaning_label.config(text="")
+
+    Button(learn_window, text="Listen", command=read_current_word).pack(pady=10)
+
+    Button(learn_window, text="Từ mới", command=get_new_word).pack(pady=10)
 
     learn_window.mainloop()
 
