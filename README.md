@@ -49,6 +49,19 @@ project/
 python main.py
 ```
 
+## Build Application (Convert to Executable)
+To package the application into an executable file, use `pyinstaller`:
+```bash
+pip install pyinstaller
+pyinstaller --onefile --windowed main.py
+```
+This will generate an executable file in the `dist/` folder.
+
+For a full GUI-based executable:
+```bash
+pyinstaller --onefile --windowed --name EnglishApp main.py
+```
+
 ## Usage
 ### Login Credentials
 - **Admin:** Username: `andeptrai` / Password: `andeptrai`
