@@ -29,14 +29,16 @@ pip install mysql-connector-python pyttsx3 SpeechRecognition pynput
 ```
 project/
 │
-├── main.py              # Main entry point of the application
-├── database.py          # Handles database connection and queries
-├── speech.py            # Manages speech recognition and text-to-speech
-├── gui.py               # Login and registration interface
-├── learn_window.py      # Vocabulary learning interface
-├── admin_window.py      # Admin interface
-├── english.sql          # Database schema and table creation script
-└── README.md            # Usage instructions
+├── SRC/
+│   ├── main.py              # Main entry point of the application
+│   ├── database.py          # Handles database connection and queries
+│   ├── speech.py            # Manages speech recognition and text-to-speech
+│   ├── gui.py               # Login and registration interface
+│   ├── learn_window.py      # Vocabulary learning interface
+│   ├── admin_window.py      # Admin interface
+│   ├── english.sql          # Database schema and table creation script
+│
+└── README.md                # Usage instructions
 ```
 
 ## Installation
