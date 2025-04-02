@@ -1,11 +1,12 @@
 # English Learning Application
 
-This is a simple application to practice speaking pronunciation and learn English.  built with Python, featuring a graphical interface (Tkinter), speech recognition, text-to-speech for vocabulary, and user management via a MariaDB/MySQL database.
+This is a simple application for practicing English pronunciation and vocabulary. It is built with Python and features a graphical interface (Tkinter), speech recognition, text-to-speech functionality, and user management via a MariaDB/MySQL database.
 
 ## Features
-- **Register/Login**: Users can create an account or log in (with admin/user roles).
-- **Vocabulary Learning**: Displays random words with meanings, supports listening to words, and checks pronunciation.
-- **Admin Dashboard**: Separate interface for administrators. Administrators can add new words or delete words and manage users.
+- **User Authentication**: Users can register and log in with admin/user roles.
+- **Vocabulary Learning**: Displays random words with meanings, supports text-to-speech playback, and pronunciation checking.
+- **Admin Dashboard**: Allows administrators to manage words and users (add/delete words, manage accounts).
+
 ## Requirements
 ### Software
 - Python
@@ -13,68 +14,67 @@ This is a simple application to practice speaking pronunciation and learn Englis
 - Microphone (for speech recognition)
 
 ### Python Libraries
-The application uses the following libraries:
-- `tkinter`: For the graphical user interface.
-- `mysql-connector-python`: For database connectivity.
-- `pyttsx3`: For text-to-speech functionality.
-- `speech_recognition`: For speech recognition.
-- `threading`: For running speech recognition in a separate thread.
-- `pynput`: For potential keyboard/mouse control (not actively used in current code).
-
-Install them with:
+The application requires the following libraries:
 ```bash
 pip install mysql-connector-python pyttsx3 SpeechRecognition pynput
+```
+- `tkinter`: GUI framework
+- `mysql-connector-python`: Database connectivity
+- `pyttsx3`: Text-to-speech
+- `speech_recognition`: Speech recognition
+- `threading`: Handles speech recognition in a separate thread
+- `pynput`: Potential keyboard/mouse control (not actively used)
 
-Project Structure
-
+## Project Structure
+```
 project/
 │
-├── main.py              # Main file to run the application
+├── main.py              # Main entry point of the application
 ├── database.py          # Handles database connection and queries
 ├── speech.py            # Manages speech recognition and text-to-speech
 ├── gui.py               # Login and registration interface
 ├── learn_window.py      # Vocabulary learning interface
 ├── admin_window.py      # Admin interface
-├── english.sql          # SQL file to create database and tables
+├── english.sql          # Database schema and table creation script
 └── README.md            # Usage instructions
+```
 
-Installation
-1. Set Up the Database
-Install MariaDB/MySQL on your machine.
-Run file  createdata.sql 
-
-Run:
+## Installation
+1. **Set Up the Database**
+   - Install MariaDB/MySQL on your machine.
+   - Run the `english.sql` script to create the necessary database and tables.
+   
+2. **Run the Application**
+```bash
 python main.py
+```
 
-Usage
-Login:
-Admin: andeptrai / andeptrai
+## Usage
+### Login Credentials
+- **Admin:** Username: `andeptrai` / Password: `andeptrai`
+- **User:** Can register manually via the application
 
-User: U can register
+### Vocabulary Learning
+- Click **"Listen"** to hear the word and its meaning.
+- Click **"New Word"** to generate a random word.
+- Click **"Speak"** to test pronunciation (requires a microphone).
 
-Vocabulary Learning:
-Click "Listen" to hear the word and its meaning.
+## Operating System Notes
+- On **Linux/macOS**, additional setup may be required:
+  - Install `espeak` for `pyttsx3`
+  - Install `portaudio` for `speech_recognition`
+- Ensure your microphone is properly configured and permissions are granted.
 
-Click "New Word" to get a random word.
+## Debugging
+If errors occur, check the following:
+- **Database Connection**: Ensure MariaDB/MySQL is running and credentials are correct.
+- **Microphone Access**: Test with a simple recording app first to verify functionality.
 
-Click "Speak" to test your pronunciation (requires a microphone).
+## Author
+Created by **anlongawf**
 
-Operating System: 
-On Linux/macOS, speech features may require additional setup (e.g., install espeak for pyttsx3 and portaudio for speech_recognition).
+📧 Contact: anan123456a123@gmail.com
 
-Ensure your microphone is configured and permissions are granted.
+## License
+This project is open-source. Feel free to modify and use it as needed.
 
-Debugging: If errors occur, check:
-Database connection (MariaDB/MySQL running, correct credentials).
-
-Microphone access (test with a simple recording app first).
-
-Author
-Created by anlongawf.
-
-Contact: anan123456a123@gmail.com
-
-License
-This project is open-source; feel free to modify and use it as needed.
-
----
