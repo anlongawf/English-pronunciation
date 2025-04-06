@@ -3,6 +3,7 @@ from tkinter import messagebox
 from database import check_database
 import cv2
 from PIL import Image, ImageTk
+from deepface import DeepFace
 
 def register(root):
     register_window = Toplevel(root)
@@ -106,30 +107,57 @@ def login(root, main_window_callback, admin_window_callback):
 
 def login_faceid(root, main_window_callback, admin_window_callback):
     login_window = Toplevel(root)
-    login_window.title("Đăng nhập")
+    login_window.title("Đăng nhập bằng FaceID")
     login_window.geometry("500x400")
 
     video_label = Label(login_window)
     video_label.pack(pady=10)
 
-    # Create Camera
+    Button(login_window, text="Kiểm tra FaceID", command=lambda: check_face(), width=15, bg="blue", fg="white").pack(pady=5)
+    Button(login_window, text="Hủy", command=login_window.destroy, width=15, bg="red", fg="white").pack(pady=5)
+
     camera = cv2.VideoCapture(0)
     if not camera.isOpened():
         messagebox.showerror("Lỗi", "Không thể truy cập webcam!", parent=login_window)
         login_window.destroy()
         return
 
+    current_frame = None
+    is_running = True  # Cờ để kiểm soát update_video
+
     def update_video():
+        nonlocal current_frame, is_running
+        if not is_running:  # Dừng nếu không còn chạy
+            return
         ret, frame = camera.read()
         if ret:
-            frame = cv2.flip(frame, 1) # flip camera
-            # convert from Open CV camera to Pil/Tkinter
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR to RGP
+            frame = cv2.flip(frame, 1)
+            current_frame = frame.copy()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             img = Image.fromarray(frame)
-            imgtk = ImageTk.PhotoImage(image=img) # show cam
-
+            imgtk = ImageTk.PhotoImage(image=img)
             video_label.imgtk = imgtk
             video_label.configure(image=imgtk)
         login_window.after(10, update_video)
+
+    def check_face():
+        nonlocal is_running
+        if current_frame is None:
+            messagebox.showwarning("Lỗi", "Không có khung hình để kiểm tra!", parent=login_window)
+            return
+
+        db = check_database()
+        if db is None:
+            return
+
+
+
     update_video()
 
+    def on_closing():
+        nonlocal is_running
+        is_running = False  # Dừng update_video khi đóng cửa sổ
+        camera.release()
+        login_window.destroy()
+
+    login_window.protocol("WM_DELETE_WINDOW", on_closing)
