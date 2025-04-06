@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 from database import check_database
+import cv2
+from PIL import Image, ImageTk
 
 def register(root):
     register_window = Toplevel(root)
@@ -100,5 +102,34 @@ def login(root, main_window_callback, admin_window_callback):
         finally:
             if cursor:
                 cursor.close()
-
     Button(login_window, text="Đăng nhập", command=attempt_login, width=15, bg="blue", fg="white").pack(pady=20)
+
+def login_faceid(root, main_window_callback, admin_window_callback):
+    login_window = Toplevel(root)
+    login_window.title("Đăng nhập")
+    login_window.geometry("500x400")
+
+    video_label = Label(login_window)
+    video_label.pack(pady=10)
+
+    # Create Camera
+    camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        messagebox.showerror("Lỗi", "Không thể truy cập webcam!", parent=login_window)
+        login_window.destroy()
+        return
+
+    def update_video():
+        ret, frame = camera.read()
+        if ret:
+            frame = cv2.flip(frame, 1) # flip camera
+            # convert from Open CV camera to Pil/Tkinter
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #BGR to RGP
+            img = Image.fromarray(frame)
+            imgtk = ImageTk.PhotoImage(image=img) # show cam
+
+            video_label.imgtk = imgtk
+            video_label.configure(image=imgtk)
+        login_window.after(10, update_video)
+    update_video()
+
